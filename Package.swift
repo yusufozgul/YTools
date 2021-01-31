@@ -13,11 +13,8 @@ let package = Package(
             name: "YTools-Swift",
             targets: ["YTools-Swift"]),
         .library(
-            name: "YNetworkBase",
-            targets: ["YNetworkBase"]),
-        .library(
-            name: "YNetworkBase-Combine",
-            targets: ["YNetworkBase-Combine"]),
+            name: "YNetworkKit",
+            targets: ["YNetworkKit"]),
         .library(
             name: "YImageKit",
             targets: ["YImageKit"]),
@@ -28,11 +25,7 @@ let package = Package(
             dependencies: []
         ),
         .target(
-            name: "YNetworkBase",
-            dependencies: []
-        ),
-        .target(
-            name: "YNetworkBase-Combine",
+            name: "YNetworkKit",
             dependencies: []
         ),
         .target(
