@@ -1,3 +1,3 @@
-struct YTools_2 {
+struct YImageKit {
     var text = "Hello, World!"
 }
