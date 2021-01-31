@@ -8,11 +8,11 @@
 import Combine
 import Foundation
 
-struct Request {
-    var cancellable: AnyCancellable?
-    var isResuming: Bool = false
+public struct Request {
+    public var cancellable: AnyCancellable?
+    public var isResuming: Bool = false
     
-    var cancel: Void {
+    public var cancel: Void {
         cancellable?.cancel()
     }
 }

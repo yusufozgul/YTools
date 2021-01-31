@@ -8,11 +8,11 @@
 import Combine
 import Foundation
 
-protocol Networkable {
+public protocol Networkable {
     func send<T>(requestData: RequestModel, modelType: T.Type, result: @escaping (Result<T, ErrorType>) -> Void, finished: @escaping () -> Void) -> Request where T : Decodable
 }
 
-extension Networkable {
+public extension Networkable {
     func send<T>(requestData: RequestModel, modelType: T.Type, result: @escaping (Result<T, ErrorType>) -> Void, finished: @escaping () -> Void) -> Request where T : Decodable {
         let request = createRequest(requestData: requestData, modelType: modelType)
         let requestCancellable = request.sink { (status) in

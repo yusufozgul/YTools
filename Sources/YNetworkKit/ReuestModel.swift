@@ -13,7 +13,7 @@ public struct RequestModel {
     var body: Encodable?
     var header: [String : String]?
     
-    init(url: String, method: HttpMethod = .GET, body: Encodable? = nil, header: [String : String]? = nil) {
+    public init(url: String, method: HttpMethod = .GET, body: Encodable? = nil, header: [String : String]? = nil) {
         self.method = method
         self.url = url
         self.body = body

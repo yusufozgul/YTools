@@ -8,12 +8,12 @@
 import Combine
 import Foundation
 
-protocol BaseNetworkable: Networkable {
+public protocol BaseNetworkable: Networkable {
     var requests: [AnyCancellable] { get }
     func cancelAllRequest()
 }
 
-extension BaseNetworkable {
+public extension BaseNetworkable {
     func cancelAllRequest() {
         requests.forEach({ $0.cancel() })
     }
