@@ -10,8 +10,14 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "YTools",
-            targets: ["YTools-Swift", "YNetworkBase", "YImageKit"]),
+            name: "YTools-Swift",
+            targets: ["YTools-Swift"]),
+        .library(
+            name: "YNetworkBase",
+            targets: ["YNetworkBase"]),
+        .library(
+            name: "YImageKit",
+            targets: ["YImageKit"]),
     ],
     targets: [
         .target(
