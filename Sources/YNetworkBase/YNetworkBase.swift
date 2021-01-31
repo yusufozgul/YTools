@@ -9,7 +9,7 @@ public class ApiService<T: Decodable> {
     /// - Parameters:
     ///   - request: `ApiRequestProtocol` for request detail.
     ///   - completion: If `result` is error return `ApiError` otherwise return `T` type
-    func getData(request: ApiRequestProtocol, completion: @escaping (Result<T, ApiError>) -> Void) {
+    public func getData(request: ApiRequestProtocol, completion: @escaping (Result<T, ApiError>) -> Void) {
         guard let urlString = request.url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: urlString) else {
             completion(.failure(.urlEncode))
             return
