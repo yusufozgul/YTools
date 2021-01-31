@@ -2,6 +2,9 @@ import Foundation
 
 /// Send netork request and return result data
 public class ApiService<T: Decodable> {
+    
+    public init() { }
+    
     /// Send netork request and return result data
     /// - Parameters:
     ///   - request: `ApiRequestProtocol` for request detail.

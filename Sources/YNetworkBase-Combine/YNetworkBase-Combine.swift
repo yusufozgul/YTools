@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 
-
 public enum HttpMethod: String {
     case GET
     case POST
@@ -9,7 +8,7 @@ public enum HttpMethod: String {
     case PUT
 }
 
-enum ErrorType: Error {
+public enum ErrorType: Error {
     case serverError
     case decodeError(String)
     case badUrlError
@@ -35,12 +34,12 @@ enum ErrorType: Error {
     }
 }
 
-class API<ResponseBody: Codable> {
+public class API<ResponseBody: Codable> {
     private let apiUrl: URL
     private let reqBody: Data?
     private let apiMethod: HttpMethod
     
-    init(url: String, body: Data?, method: HttpMethod) throws {
+    public init(url: String, body: Data?, method: HttpMethod) throws {
         if let apiUrl = URL(string: url) {
             self.apiUrl = apiUrl
         } else {
@@ -83,7 +82,7 @@ class API<ResponseBody: Codable> {
             .eraseToAnyPublisher()
     }
     
-    open func request(_ result: @escaping (_ result: Subscribers.Completion<ErrorType>) -> Void, _ value: @escaping (_ value: ResponseBody?) -> Void) -> AnyCancellable {
+    public func request(_ result: @escaping (_ result: Subscribers.Completion<ErrorType>) -> Void, _ value: @escaping (_ value: ResponseBody?) -> Void) -> AnyCancellable {
         return self.request.sink(receiveCompletion: { (error) in
             result(error)
         }) { (response) in
