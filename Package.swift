@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "YTools",
     platforms: [
-            .iOS(.v13)
+        .iOS(.v13)
     ],
     products: [
         .library(
@@ -15,6 +15,9 @@ let package = Package(
         .library(
             name: "YNetworkBase",
             targets: ["YNetworkBase"]),
+        .library(
+            name: "YNetworkBase-Combine",
+            targets: ["YNetworkBase-Combine"]),
         .library(
             name: "YImageKit",
             targets: ["YImageKit"]),
@@ -26,6 +29,10 @@ let package = Package(
         ),
         .target(
             name: "YNetworkBase",
+            dependencies: []
+        ),
+        .target(
+            name: "YNetworkBase-Combine",
             dependencies: []
         ),
         .target(
