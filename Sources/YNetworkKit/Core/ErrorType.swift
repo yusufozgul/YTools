@@ -15,7 +15,7 @@ public enum ErrorType: Error {
     case errorMessage(String)
     case other
     
-    public var localizedDescription: String {
+    public var description: String {
         switch self {
         case .serverError:
             return "SERVER_ERROR"

@@ -1,5 +1,5 @@
 //
-//  Networkable.swift
+//  Network.swift
 //  
 //
 //  Created by Yusuf Özgül on 31.01.2021.
@@ -8,27 +8,27 @@
 import Combine
 import Foundation
 
-public protocol Networkable {
-    func send<T>(requestData: RequestModel, modelType: T.Type, result: @escaping (Result<T, ErrorType>) -> Void, finished: @escaping () -> Void) -> Request where T : Decodable
+public protocol Network {
+    func send<T>(requestData: BaseRequestModel, modelType: T.Type, result: @escaping (Result<T, ErrorType>) -> Void) where T : Decodable
 }
 
-public extension Networkable {
-    func send<T>(requestData: RequestModel, modelType: T.Type, result: @escaping (Result<T, ErrorType>) -> Void, finished: @escaping () -> Void) -> Request where T : Decodable {
+public extension Network {
+    func send<T>(requestData: BaseRequestModel, modelType: T.Type, result: @escaping (Result<T, ErrorType>) -> Void) where T : Decodable {
         let request = createRequest(requestData: requestData, modelType: modelType)
         let requestCancellable = request.sink { (status) in
             switch status {
             case .finished:
-                finished()
+                requestData.setIsResuming(isResuming: false)
             case .failure(let error):
                 result(.failure(error))
             }
         } receiveValue: { (response) in
             result(.success(response))
         }
-        return .init(cancellable: requestCancellable, isResuming: true)
+        requestData.setCancellable(cancellable: requestCancellable)
     }
     
-    private func createRequest<T>(requestData: RequestModel, modelType: T.Type) -> AnyPublisher<T, ErrorType> where T : Decodable {
+    private func createRequest<T>(requestData: BaseRequestModel, modelType: T.Type) -> AnyPublisher<T, ErrorType> where T : Decodable {
         var request = URLRequest(url: URL(string: requestData.url)!)
         request.httpMethod = requestData.method.rawValue
         request.httpBody = requestData.body?.toJSONData()
