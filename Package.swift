@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "YTools",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v13),
+        .macOS(.v10_15),
     ],
     products: [
         .library(
@@ -25,6 +26,10 @@ let package = Package(
             name: "YNetworkKit",
             dependencies: []
         ),
+        .testTarget(
+            name: "YNetworkKitTests",
+            dependencies: ["YNetworkKit"],
+            resources: [.process("Resources")]
         ),
     ]
 )

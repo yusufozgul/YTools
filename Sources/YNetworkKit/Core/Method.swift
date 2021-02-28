@@ -7,9 +7,22 @@
 
 import Foundation
 
-public enum HttpMethod: String {
-    case GET
-    case POST
+public enum HttpMethod {
+    case GET([URLQueryItem])
+    case POST(Encodable?)
     case DELETE
-    case PUT
+    case PUT(Encodable?)
+    
+    public var rawValue: String {
+        switch self {
+        case .GET:
+            return "GET"
+        case .POST:
+            return "POST"
+        case .DELETE:
+            return "DELETE"
+        case .PUT:
+            return "PUT"
+        }
+    }
 }

@@ -8,20 +8,40 @@
 import Foundation
 import Combine
 
-public class BaseRequestModel {
-    var method: HttpMethod
-    var url: String
-    var body: Encodable?
-    var header: [String : String]?
+public protocol BaseRequestProtocol: BaseRequestCoreProtocol {
+    var method: HttpMethod { get }
+    var url: URL { get }
+    var headers: [String : String] { get }
+}
+
+public protocol BaseRequestCoreProtocol {
+    var request: URLRequest { get }
+    
+    func setCancellable(cancellable: AnyCancellable)
+    func setIsResuming(isResuming: Bool)
+}
+
+public class BaseRequestModel: BaseRequestProtocol {
+    public var method: HttpMethod
+    public var url: URL
+    public var headers: [String : String] = [:]
     
     private var cancellable: AnyCancellable?
     private var isRequestResuming: Bool = false
+    private var constant: ApiConstantProtocol
     
-    public init(domain: String, path: String, params: [String : String]? = nil, method: HttpMethod = .GET, body: Encodable? = nil, header: [String : String]? = nil) {
+    public init(constant: ApiConstantProtocol = ApiConstant.apiDefault,
+                path: String,
+                method: HttpMethod,
+                headers: [String : String] = [:]) {
+        self.constant = constant
         self.method = method
-        self.url = domain + path
-        self.body = body
-        self.header = header
+        self.headers = headers
+        if let url = URL(string: (constant.defaultDomain ?? "") + path) {
+            self.url = url
+        } else {
+            preconditionFailure("URL Decode form string failed")
+        }
     }
     
     public func cancel() {
@@ -34,11 +54,32 @@ public class BaseRequestModel {
 }
 
 extension BaseRequestModel {
-    func setCancellable(cancellable: AnyCancellable) {
+    public var request: URLRequest {
+        var request = URLRequest(url: url)
+        switch method {
+        case let .GET(queryItems):
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+            components?.queryItems = queryItems
+            guard let url = components?.url else {
+                preconditionFailure("URL can't create from components")
+            }
+            request = URLRequest(url: url)
+        case .POST(let data), .PUT(let data):
+            request.httpBody = data?.toJSONData()
+        default:
+            break
+        }
+        
+        request.allHTTPHeaderFields = headers.merging(constant.defaultHeader ?? [:]) { (current, _) in current }
+        request.httpMethod = method.rawValue
+        return request
+    }
+    
+    public func setCancellable(cancellable: AnyCancellable) {
         self.cancellable = cancellable
     }
     
-    func setIsResuming(isResuming: Bool) {
+    public func setIsResuming(isResuming: Bool) {
         self.isRequestResuming = isResuming
     }
 }
