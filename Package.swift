@@ -15,9 +15,6 @@ let package = Package(
         .library(
             name: "YNetworkKit",
             targets: ["YNetworkKit"]),
-        .library(
-            name: "YImageKit",
-            targets: ["YImageKit"]),
     ],
     targets: [
         .target(
@@ -28,9 +25,6 @@ let package = Package(
             name: "YNetworkKit",
             dependencies: []
         ),
-        .target(
-            name: "YImageKit",
-            dependencies: []
         ),
     ]
 )
