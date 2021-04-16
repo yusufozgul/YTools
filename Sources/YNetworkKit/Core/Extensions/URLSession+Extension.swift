@@ -21,7 +21,6 @@ extension NetworkProtocol {
         return urlSession.dataTaskPublisher(for: urlRequest)
             .mapError(Error.networking)
             .map(\.data)
-            .receive(on: RunLoop.main)
             .decode(type: modelType, decoder: decoder)
             .mapError(Error.decoding)
             .eraseToAnyPublisher()
