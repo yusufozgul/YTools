@@ -13,7 +13,7 @@ public protocol Networkable {
                  modelType: T.Type,
                  decoder: JSONDecoder,
                  urlSession: NetworkProtocol,
-                 result: @escaping (Result<T, Error>) -> Void) where T : Decodable
+                 result: @escaping (Result<T, NetworkableError>) -> Void) where T : Decodable
 }
 
 public extension Networkable {
@@ -21,11 +21,11 @@ public extension Networkable {
                  modelType: T.Type,
                  decoder: JSONDecoder = .init(),
                  urlSession: NetworkProtocol = URLSession.shared,
-                 result: @escaping (Result<T, Error>) -> Void) where T : Decodable {
+                 result: @escaping (Result<T, NetworkableError>) -> Void) where T : Decodable {
         let request = urlSession.createRequest(urlRequest: requestData.request, modelType: modelType, decoder: decoder, urlSession: urlSession)
         
         let requestCancellable = request.sink(receiveCompletion: {
-            if case .failure(let error) = $0 { result(.failure(error)) }
+            if case .failure(let error) = $0 { result(.failure(.networking(URLError(_nsError: error as NSError)))) }
             
             requestData.setIsResuming(isResuming: false)
         }, receiveValue: { result(.success($0)) })

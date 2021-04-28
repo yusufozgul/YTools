@@ -19,10 +19,10 @@ extension NetworkProtocol {
                                  decoder: JSONDecoder,
                                  urlSession: NetworkProtocol) -> AnyPublisher<T, Error> where T : Decodable {
         return urlSession.dataTaskPublisher(for: urlRequest)
-            .mapError(Error.networking)
+            .mapError(NetworkableError.networking)
             .map(\.data)
             .decode(type: modelType, decoder: decoder)
-            .mapError(Error.decoding)
+            .mapError(NetworkableError.decoding)
             .eraseToAnyPublisher()
     }
 }

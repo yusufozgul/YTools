@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Error: Swift.Error {
+public enum NetworkableError: Error {
     case networking(URLError)
     case decoding(Swift.Error)
     
